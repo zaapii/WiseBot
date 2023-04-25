@@ -33,8 +33,8 @@ const data = {
   "payTypes": ['Wise'],
 };
 
-const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
-const chatId = process.env.CHAT_ID;
+const bot = new Telegraf("6166277288:AAELNkzLdfsP3NA8NmeD0v_WhzC8PPYYXf8");
+const chatId = '832635798';
 
 async function sendSalePrices() {
   const responseData = await fetch(
