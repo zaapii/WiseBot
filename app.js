@@ -59,7 +59,7 @@ async function sendSalePrices() {
 }
 
 // Schedule the function to run every hour
-cron.schedule('00 59 * * * *', () => {
+cron.schedule('* * * * * *', () => {
   sendSalePrices().catch(err => console.error(err));
 });
 
