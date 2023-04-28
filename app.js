@@ -52,14 +52,17 @@ async function sendSalePrices() {
   const jsonData = await responseData.json();
 
   const salePrices = jsonData.data.slice(0, 10).map(item => item.adv.price);
-
-  const message = `Here are the first 10 sale prices:\n${salePrices.join('\n')}`;
+  
+  const message = 'No sale prices below 1.013'
+  if (salePrices.some(price => price < 1.013)) {
+    message = `Here are the first 10 sale prices:\n${salePrices.join('\n')}`;
+  }
 
   bot.telegram.sendMessage(chatId, message);
 }
 
 // Schedule the function to run every hour
-cron.schedule('0 */15 * * * *', () => {
+cron.schedule('*/5 * * * *', () => {
   sendSalePrices().catch(err => console.error(err));
 });
 
