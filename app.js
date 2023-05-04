@@ -53,7 +53,7 @@ async function sendSalePrices() {
 
   const salePrices = jsonData.data.slice(0, 10).map(item => item.adv.price);
   
-  const message = 'No sale prices below 1.013'
+  let message = 'No sale prices below 1.013'
   if (salePrices.some(price => price < 1.013)) {
     message = `Here are the first 10 sale prices:\n${salePrices.join('\n')}`;
   }
@@ -62,7 +62,7 @@ async function sendSalePrices() {
 }
 
 // Schedule the function to run every hour
-cron.schedule('*/5 * * * *', () => {
+cron.schedule('* * * * *', () => {
   sendSalePrices().catch(err => console.error(err));
 });
 
