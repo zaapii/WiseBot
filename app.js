@@ -29,7 +29,8 @@ const formatResponse = (response) => {
 // Function to send a message using the Telegram bot
 const sendMessageToTelegram = async (message) => {
   try {
-    await bot.telegram.sendMessage(chatId, message);
+    await bot.telegram.sendMessage(chatIdPapico, message);
+    await bot.telegram.sendMessage(chatIdLariza, message);
   } catch (err) {
     console.error("Error sending message to Telegram:", err);
   }
@@ -135,7 +136,8 @@ app.listen(port, () => {
 
 // Telegram bot setup (add your TELEGRAM_BOT_TOKEN and CHAT_ID)
 const bot = new Telegraf("6166277288:AAELNkzLdfsP3NA8NmeD0v_WhzC8PPYYXf8");
-const chatId = "832635798";
+const chatIdPapico = "832635798";
+const chatIdLariza = "6171969653";
 
 bot.launch().then(() => {
   console.log("Telegram bot is running.");
