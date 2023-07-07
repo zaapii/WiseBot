@@ -36,6 +36,27 @@ const sendMessageToTelegram = async (message) => {
   }
 };
 
+const getUSDTData = async () => {
+  const responseDataUSDT = await fetch(
+    "https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search",
+    {
+      headers,
+      method: "POST",
+      body: JSON.stringify(dataUSDT),
+    }
+  );
+
+  const responseDataUSDTJSON = await responseDataUSDT.json();
+  const salePricesUSDT = responseDataUSDTJSON.data
+    .slice(0, 10)
+    .map((item) => item.adv.price);
+  messageUSDT = `Here are the first 10 USDT sell prices:\n${salePricesUSDT.join(
+    "\n"
+  )}`;
+
+  return formatResponse(responseDataUSDTJSON);
+}
+
 const getWiseData = async () => {
   data.payTypes = [payTypes[1]];
   const responseDataWise = await fetch(
@@ -109,8 +130,16 @@ const data = {
   rows: 10,
   filterType: "all",
 };
+
+const dataUSDT = {
+  ...data,
+  fiat: "ARS",
+  tradeType: "SELL",
+  payTypes: []
+}
 let messageWise = "";
 let messageSkrill = "";
+let messageUSDT = "";
 
 app.get("/send-message", (req, res) => {
   sendMessageToTelegram(messageWise);
@@ -122,7 +151,8 @@ app.get("/", async (req, res) => {
   try {
     const wise = await getWiseData();
     const skrill = await getSkrillData();
-    res.status(200).send({ wise: wise, skrill: skrill });
+    const usdt = await getUSDTData();
+    res.status(200).send({ wise: wise, skrill: skrill, usdt: usdt });
   } catch (err) {
     console.error(err);
     res.status(500).send("An error occurred while fetching sale prices.");
